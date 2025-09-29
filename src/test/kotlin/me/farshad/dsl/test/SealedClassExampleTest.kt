@@ -18,6 +18,11 @@ import kotlin.test.assertTrue
 class SealedClassExampleTest {
 
     @Serializable
+    enum class CustomerType {
+        INDIVIDUAL, ORGANIZATION
+    }
+
+    @Serializable
     sealed class CustomerDto {
         @Serializable
         data class IndividualCustomerDto(
@@ -25,7 +30,7 @@ class SealedClassExampleTest {
             val firstName: String,
             val lastName: String,
             val email: String,
-            val type: String = "INDIVIDUAL"
+            val type: CustomerType = CustomerType.INDIVIDUAL
         ) : CustomerDto()
 
         @Serializable
@@ -34,7 +39,7 @@ class SealedClassExampleTest {
             val organizationName: String,
             val vat: String,
             val email: String,
-            val type: String = "ORGANIZATION"
+            val type: CustomerType = CustomerType.ORGANIZATION
         ) : CustomerDto()
     }
 

@@ -1,6 +1,7 @@
 package me.farshad.dsl.builder.utils
 
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -8,6 +9,8 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlin.reflect.KProperty1
+
+private val logger = KotlinLogging.logger {}
 
 // Helper function to create JsonElement from any value
 fun Any.toJsonElement(): JsonElement =
@@ -66,7 +69,8 @@ private fun reflectionBasedSerialization(obj: Any): JsonElement {
             val value = property.get(obj)
             jsonMap[property.name] = convertValueToJsonElement(value)
         } catch (e: Exception) {
-            // Skip inaccessible properties silently
+            // Log inaccessible properties for debugging
+            logger.debug { "Unable to access property '${property.name}' on ${obj::class.simpleName}: ${e.message}" }
             continue
         }
     }
